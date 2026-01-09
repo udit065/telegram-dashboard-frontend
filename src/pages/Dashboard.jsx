@@ -24,6 +24,17 @@ export default function Dashboard() {
 
         return () => socket.off("newMessage");
     }, []);
+    useEffect(() => {
+        socket.on("messageReplied", (updatedMsg) => {
+            setMessages(prev =>
+                prev.map(m =>
+                    m._id === updatedMsg._id ? updatedMsg : m
+                )
+            );
+        });
+
+        return () => socket.off("messageReplied");
+    }, []);
 
 
     return (
