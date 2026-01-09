@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { socket } from "../services/socket";
 import toast from "react-hot-toast";
 import Spinner from "./Spinner";
+import '../App.css';
 
 export default function BroadcastBox() {
     const [type, setType] = useState("text");
@@ -99,7 +100,7 @@ export default function BroadcastBox() {
     };
 
     return (
-        <div style={{ border: "1px solid #ccc", padding: 16, position: "relative" }}>
+        <div className="card" style={{ position: "relative" }}>
             <Spinner loading={loading} />
             <h3>Broadcast</h3>
 
@@ -122,10 +123,11 @@ export default function BroadcastBox() {
                     <button disabled={loading} onClick={sendText}>
                         {loading ? "Sending..." : "Send Text"}
                     </button>
-
-                    <h4>Preview</h4>
-                    <div style={{ background: "#f5f5f5", padding: 8 }}>
-                        {text}
+                    <div className="card" style={{ background: "#f9fafb" }}>
+                        <h4>Preview</h4>
+                        <div style={{ background: "#f9fafb", padding: 8 }}>
+                            {text}
+                        </div>
                     </div>
                 </>
             )}

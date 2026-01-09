@@ -1,2 +1,9 @@
+const BASE_URL = "http://localhost:5000";
+
 export const getStats = () =>
-    fetch("http://localhost:5000/stats").then(res => res.json());
+    fetch(`${BASE_URL}/stats`)
+        .then(res => res.json());
+
+export const getMessages = () =>
+    fetch(`${BASE_URL}/messages`)
+        .then(res => res.json());
