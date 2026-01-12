@@ -91,6 +91,7 @@ export default function MessageList({ messages }) {
     const [replyTo, setReplyTo] = useState(null);
     const [replyText, setReplyText] = useState("");
     const [sending, setSending] = useState(false);
+    const [statusFilter, setStatusFilter] = useState("all"); // "all" | "unreplied" | "replied"
 
     /* Auto scroll to latest message */
     useEffect(() => {
@@ -102,10 +103,18 @@ export default function MessageList({ messages }) {
         textareaRef.current?.focus();
     }, [replyTo]);
 
-    const filteredMessages = messages.filter(m =>
-        m.user.toLowerCase().includes(query.toLowerCase()) ||
-        m.text.toLowerCase().includes(query.toLowerCase())
-    );
+    const filteredMessages = messages
+        .filter(m => {
+            // ✅ Status filter
+            if (statusFilter === "unreplied") return !m.replied;
+            if (statusFilter === "replied") return m.replied;
+            return true; // "all"
+        })
+        .filter(m =>
+            m.user.toLowerCase().includes(query.toLowerCase()) ||
+            m.text.toLowerCase().includes(query.toLowerCase())
+        );
+
 
     const sendReply = async () => {
         if (!replyText.trim()) return;
@@ -154,6 +163,27 @@ export default function MessageList({ messages }) {
                     onChange={(e) => setQuery(e.target.value)}
                     style={search}
                 />
+            </div>
+
+            <div style={{ marginBottom: 12 }}>
+                <button
+                    onClick={() => setStatusFilter("all")}
+                    style={{ marginRight: 6, fontWeight: statusFilter === "all" ? "bold" : "normal" }}
+                >
+                    All
+                </button>
+                <button
+                    onClick={() => setStatusFilter("unreplied")}
+                    style={{ marginRight: 6, fontWeight: statusFilter === "unreplied" ? "bold" : "normal" }}
+                >
+                    Unreplied
+                </button>
+                <button
+                    onClick={() => setStatusFilter("replied")}
+                    style={{ fontWeight: statusFilter === "replied" ? "bold" : "normal" }}
+                >
+                    Replied
+                </button>
             </div>
 
             <div style={chatBox}>
