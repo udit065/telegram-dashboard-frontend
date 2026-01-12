@@ -26,11 +26,19 @@ export default function Dashboard() {
     }, []);
     useEffect(() => {
         socket.on("messageReplied", (updatedMsg) => {
-            setMessages(prev =>
-                prev.map(m =>
-                    m._id === updatedMsg._id ? updatedMsg : m
-                )
-            );
+            setMessages(prev => {
+                const exists = prev.some(m => m._id === updatedMsg._id);
+
+                // If message exists → update
+                if (exists) {
+                    return prev.map(m =>
+                        m._id === updatedMsg._id ? updatedMsg : m
+                    );
+                }
+
+                // If not → append (safety net)
+                return [...prev, updatedMsg];
+            });
         });
 
         return () => socket.off("messageReplied");

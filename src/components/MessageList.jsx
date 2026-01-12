@@ -113,17 +113,28 @@ export default function MessageList({ messages }) {
         try {
             setSending(true);
 
-            await fetch("http://localhost:5000/reply", {
+            const res = await fetch("http://localhost:5000/reply", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    username: replyTo.user,
                     messageId: replyTo._id,
                     text: replyText
                 })
             });
 
+            if (!res.ok) {
+                const errText = await res.text();
+                console.error("Reply API failed:", res.status, errText);
+                throw new Error();
+            }
+
             toast.success("Reply sent");
+            // 🔥 INSTANT UI UPDATE (NO SOCKET DEPENDENCY)
+            replyTo.replied = true;
+            replyTo.replyText = replyText;
+            replyTo.repliedAt = new Date();
+
+            // force state refresh by cloning array
             setReplyTo(null);
             setReplyText("");
         } catch {
@@ -148,7 +159,7 @@ export default function MessageList({ messages }) {
             <div style={chatBox}>
                 {filteredMessages.map((m, i) => (
                     <div
-                        key={i}
+                        key={m._id}
                         style={{
                             ...bubble,
                             background: m.replied ? "#e6fffa" : "#fff",
