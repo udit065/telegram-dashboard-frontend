@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { socket } from "../services/socket";
 import { getStats, getMessages } from "../services/api";
 import Stats from "../components/Stats";
-import Chart from "../components/Chart";
+// import Chart from "../components/Chart";
 import MessageList from "../components/MessageList";
 import BroadcastBox from "../components/BroadcastBox";
 import PageContainer from "../layout/PageContainer";
@@ -52,7 +52,7 @@ export default function Dashboard() {
     return (
         <PageContainer title="Telegram Bot Dashboard">
             <Stats stats={stats} />
-            <Chart replied={stats.replied} unreplied={stats.unreplied} />
+            {/* <Chart replied={stats.replied} unreplied={stats.unreplied} /> */}
             <BroadcastBox />
             <MessageList messages={messages} />
         </PageContainer>

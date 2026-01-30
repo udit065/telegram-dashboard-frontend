@@ -11,6 +11,14 @@ export default function Stats({ stats }) {
                 <h4>Total Messages</h4>
                 <h2>{stats.messages}</h2>
             </div>
+            <div className="card">
+                <h4>Total Replied</h4>
+                <h2>{stats.replied}</h2>
+            </div>
+            <div className="card">
+                <h4>Total Unreplied</h4>
+                <h2>{stats.unreplied}</h2>
+            </div>
         </div>
 
     );
